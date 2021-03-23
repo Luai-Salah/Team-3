@@ -54,8 +54,8 @@ public class ProjectileShooter : MonoBehaviour
     {
         var projectileObj = Instantiate(projectile, firePoint.position, Quaternion.identity) as GameObject;
         projectileObj.GetComponent<Rigidbody>().velocity = (destination - firePoint.position).normalized * projectileSpeed;
-        projectileObj.GetComponentInChildren<ParticleSystem>().startColor = Gun.GetComponent<MeshRenderer>().material.color;
-        projectileObj.GetComponent<Projectile>().color = Gun.GetComponent<MeshRenderer>().material.color;
+		projectileObj.GetComponentInChildren<MeshRenderer>().material.color = Gun.GetComponent<MeshRenderer>().material.color;
+		projectileObj.GetComponent<Projectile>().color = Gun.GetComponent<MeshRenderer>().material.color;
     }
 
     private void SetGunColor(Material material)
