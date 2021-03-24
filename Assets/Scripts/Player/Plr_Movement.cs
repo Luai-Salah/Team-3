@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Plr_Movement : MonoBehaviour
 {
@@ -12,10 +13,21 @@ public class Plr_Movement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundMask;
 
+    float x;
+    float y;
     private Vector3 velocity;
     private bool isGrounded;
 
-    void LateUpdate()
+    private AudioManager audioManager;
+
+	private void Start()
+	{
+        audioManager = AudioManager.instance;
+
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+	private void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDis, groundMask);
 
@@ -24,10 +36,10 @@ public class Plr_Movement : MonoBehaviour
             velocity.y = -2f;
 		}
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        y = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 move = transform.right * x + transform.forward * y;
 
         controller.Move(move * speed * Time.deltaTime);
 
@@ -40,4 +52,13 @@ public class Plr_Movement : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
     }
+
+    private IEnumerator PlayFootSound()
+	{
+		if (x != 0 || y != 0)
+		{
+            yield return new WaitForSeconds(0.2f);
+            audioManager.Play("FootStep");
+		}
+	}
 }
